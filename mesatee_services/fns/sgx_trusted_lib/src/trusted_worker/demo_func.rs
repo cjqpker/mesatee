@@ -69,6 +69,60 @@ impl Worker for EchoWorker {
     }
 }
 
+// =============================
+
+pub struct MyWorker {
+    worker_id: u32,
+    func_name: String,
+    func_type: FunctionType,
+    input: Option<MyWorkerInput>,
+}
+impl MyWorker {
+    pub fn new() -> Self {
+        MyWorker {
+            worker_id: 0,
+            func_name: "my".to_string(),
+            func_type: FunctionType::Single,
+            input: None,
+        }
+    }
+}
+struct MyWorkerInput {
+    msg: String,
+}
+impl Worker for MyWorker {
+    fn function_name(&self) -> &str {
+        self.func_name.as_str()
+    }
+    fn function_type(&self) -> FunctionType {
+        self.func_type
+    }
+    fn set_id(&mut self, worker_id: u32) {
+        self.worker_id = worker_id;
+    }
+    fn id(&self) -> u32 {
+        self.worker_id
+    }
+    fn prepare_input(
+        &mut self,
+        dynamic_input: Option<String>,
+        _file_ids: Vec<String>,
+    ) -> Result<()> {
+        let msg = dynamic_input.ok_or_else(|| Error::from(ErrorKind::InvalidInputError))?;
+        self.input = Some(MyWorkerInput { msg });
+        Ok(())
+    }
+    fn execute(&mut self, _context: WorkerContext) -> Result<String> {
+        let input = self
+            .input
+            .take()
+            .ok_or_else(|| Error::from(ErrorKind::InvalidInputError))?;
+        Ok(input.msg+" is returned")
+    }
+}
+
+// =============================
+
 pub struct EchoFileWorker {
     worker_id: u32,
     func_name: String,

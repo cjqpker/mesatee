@@ -35,6 +35,17 @@ fn single_party_task(enclave_info: &MesateeEnclaveInfo) -> Result<()> {
     Ok(())
 }
 
+fn single_party_task_my(enclave_info: &MesateeEnclaveInfo) -> Result<()> {
+    println!("[+] This is a single-party task: my");
+
+    let mesatee = Mesatee::new(enclave_info, "uid1", "token1", *TMS_ADDR, *TDFS_ADDR)?;
+    let task = mesatee.create_task("my")?;
+    let ret = task.invoke_with_payload("hello")?;
+    println!("{}", ret);
+
+    Ok(())
+}
+
 fn multi_party_task(enclave_info: &MesateeEnclaveInfo) -> Result<()> {
     println!("[+] This is a multi-party task: psi");
 
@@ -98,8 +109,13 @@ fn main() {
         Err(e) => println!("[-] single-party task echo error: {}", e),
     }
 
-    match multi_party_task(&mesatee_enclave_info) {
-        Ok(_) => println!("[+] successfully invoke multi-party task psi"),
-        Err(e) => println!("[-] multi-party task psi error: {}", e),
+    match single_party_task_my(&mesatee_enclave_info) {
+        Ok(_) => println!("[+] successfully invoke single-party task my"),
+        Err(e) => println!("[-] single-party task my error: {}", e),
     }
+
+    // match multi_party_task(&mesatee_enclave_info) {
+    //     Ok(_) => println!("[+] successfully invoke multi-party task psi"),
+    //     Err(e) => println!("[-] multi-party task psi error: {}", e),
+    // }
 }

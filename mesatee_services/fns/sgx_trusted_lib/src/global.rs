@@ -61,6 +61,9 @@ pub fn register_trusted_worker_statically() {
         let worker = Box::new(EchoWorker::new());
         let _ = WorkerInfoQueue::register(worker);
 
+        let worker = Box::new(MyWorker::new());
+        let _ = WorkerInfoQueue::register(worker);
+
         let worker = Box::new(PSIWorker::new());
         let _ = WorkerInfoQueue::register(worker);
 
