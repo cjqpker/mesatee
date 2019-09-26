@@ -13,7 +13,7 @@
 // limitations under the License.
 use crate::running_task::RunningTask;
 use crate::trusted_worker::{
-    BytesPlusOneWorker, ConcatWorker, DBSCANWorker, EchoFileWorker, EchoWorker,
+    BytesPlusOneWorker, ConcatWorker, DBSCANWorker, EchoFileWorker, EchoWorker, MyWorker,
     FileBytesPlusOneWorker, GBDTPredictWorker, GPWorker, GenLinearModelWorker, GmmWorker,
     ImageResizeWorker, KmeansWorker, LinRegWorker, LogisticRegWorker, MesaPyWorker,
     NaiveBayesWorker, NeuralNetWorker, OnlineDecryptWorker, PSIWorker, PrivateJoinAndComputeWorker,
