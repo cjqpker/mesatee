@@ -42,5 +42,5 @@ sgx_tcrypto = { version = "1.0.9", optional = true }
 sgx_rand  = { version = "1.0.9", optional = true }
 sgx_tse   = { version = "1.0.9", optional = true }
 
-mesatee_config = { version = "0.1.0" } 
+mesatee_config = { path = "../mesatee_config", version = "0.1.0" } 
 ipc_attribute = { path = "./ipc_attribute" }
