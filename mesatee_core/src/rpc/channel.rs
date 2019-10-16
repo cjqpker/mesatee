@@ -16,6 +16,7 @@
 #[cfg(feature = "mesalock_sgx")]
 use std::prelude::v1::*;
 
+use std::io::Write;
 use crate::rpc::sgx;
 use crate::rpc::RpcClient;
 use crate::Result;
@@ -31,14 +32,18 @@ where
     U: Serialize,
     V: DeserializeOwned,
 {
-    pub fn new(
+   pub fn _new(
         addr: std::net::SocketAddr,
         enclave_attr: sgx::EnclaveAttr,
+        extension: u8,
     ) -> Result<SgxTrustedChannel<U, V>> {
         let tcp_builder = TcpBuilder::new_v4()?;
         tcp_builder.reuse_address(true)?;
-        let stream = tcp_builder.connect(addr)?;
+        let mut stream = tcp_builder.connect(addr)?;
         stream.set_nodelay(true)?;
+
+        let ext_data: [u8; 1] = [extension; 1];
+        stream.write(&ext_data)?;
 
         let config = sgx::PipeClientConfig {
             tcp: stream,
@@ -52,6 +57,21 @@ where
         let client = sgx::PipeClient::<U, V>::open(config)?;
 
         Ok(SgxTrustedChannel { client })
+    }
+
+    pub fn new(
+        addr: std::net::SocketAddr,
+        enclave_attr: sgx::EnclaveAttr,
+    ) -> Result<SgxTrustedChannel<U, V>> {
+        _new(addr, enclave_attr, 0)
+    }
+
+    pub fn new_with_extension(
+        addr: std::net::SocketAddr,
+        enclave_attr: sgx::EnclaveAttr,
+        extension: u8,
+    ) -> Result<SgxTrustedChannel<U, V>> {
+        _new(addr, enclave_attr, extension)
     }
 
     pub fn invoke(&mut self, input: U) -> Result<V> {
