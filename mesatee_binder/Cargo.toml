@@ -16,11 +16,13 @@ default = ["mesatee_core/ipc"]
 [dependencies]
 sgx_types = "1.0.9"
 sgx_urts = "1.0.9"
-mesatee_core = { version = "0.1.0" }
-mesatee_config = { path = "../mesatee_config" }
 log = { version = "0.4.6" }
 env_logger = "0.6.1"
 
 serde        = "1.0.92"
 serde_derive = "1.0.92"
 serde_json   = "1.0.39"
+
+
+mesatee_core =   { path = "../mesatee_core" }
+mesatee_config = { path = "../mesatee_config" }

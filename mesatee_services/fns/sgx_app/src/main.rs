@@ -18,6 +18,7 @@ extern crate log;
 use mesatee_core::prelude::*;
 use mesatee_core::{config, Result};
 
+use std::io::Read;
 use std::net::TcpListener;
 use std::os::unix::io::IntoRawFd;
 use threadpool::ThreadPool;
@@ -66,7 +67,19 @@ fn run_function_node_service(tee: Arc<TeeBinder>) -> Result<()> {
     let pool = ThreadPool::new(n_workers);
     for stream in listener.incoming() {
         match stream {
-            Ok(stream) => {
+            Ok(mut stream) => {
+                let mut data = [0 as u8; 1];
+                match stream.read(&mut data) {
+                    Ok(_size) => {
+                        println!("successfully get extension field {:?}", data);
+                        println!("we can choose tee using extension field");
+                    }
+                    Err(e) => {
+                        println!("couldn't get extension field {}", e);
+                        continue;
+                    },
+                }
+
                 let tee = tee.clone();
                 pool.execute(move || {
                     debug!("new worker from {:?}", stream.peer_addr());

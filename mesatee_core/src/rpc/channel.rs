@@ -16,6 +16,7 @@
 #[cfg(feature = "mesalock_sgx")]
 use std::prelude::v1::*;
 
+use std::io::Write;
 use crate::rpc::sgx;
 use crate::rpc::RpcClient;
 use crate::Result;
@@ -34,11 +35,15 @@ where
     pub fn new(
         addr: std::net::SocketAddr,
         enclave_attr: sgx::EnclaveAttr,
+        extension: u8 = 0,
     ) -> Result<SgxTrustedChannel<U, V>> {
         let tcp_builder = TcpBuilder::new_v4()?;
         tcp_builder.reuse_address(true)?;
-        let stream = tcp_builder.connect(addr)?;
+        let mut stream = tcp_builder.connect(addr)?;
         stream.set_nodelay(true)?;
+
+        let ext_data: [u8; 1] = [extension; 1];
+        stream.write(&ext_data)?;
 
         let config = sgx::PipeClientConfig {
             tcp: stream,

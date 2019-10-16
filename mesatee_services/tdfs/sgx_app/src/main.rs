@@ -68,6 +68,15 @@ fn launch_external_server(tee: Arc<TeeBinder>) -> Result<()> {
         for stream in listener.incoming() {
             match stream {
                 Ok(stream) => {
+                    let mut data = [0 as u8; 1];
+                    match stream.read(&mut data) {
+                        Ok(_) => {}
+                        Err(e) => {
+                            println!("couldn't get extension field {}", e);
+                            continue;
+                        },
+                    }
+
                     let tee = tee.clone();
                     pool.execute(move || {
                         debug!("new client from {:?}", stream.peer_addr());
@@ -99,6 +108,15 @@ fn run_tdfs_service(tee: Arc<TeeBinder>) -> Result<()> {
     for stream in listener.incoming() {
         match stream {
             Ok(stream) => {
+                let mut data = [0 as u8; 1];
+                match stream.read(&mut data) {
+                    Ok(_) => {}
+                    Err(e) => {
+                        println!("couldn't get extension field {}", e);
+                        continue;
+                    },
+                }
+                
                 let tee = tee.clone();
                 pool.execute(move || {
                     debug!("new worker from {:?}", stream.peer_addr());
