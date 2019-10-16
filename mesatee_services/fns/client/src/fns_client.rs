@@ -33,8 +33,7 @@ impl FNSClient {
             OutboundDesc::Sgx(enclave_attr) => SgxTrustedChannel::<
                 InvokeTaskRequest,
                 InvokeTaskResponse,
-                7 as u8,
-            >::new_with_extension(addr, enclave_attr.clone())?,
+            >::new_with_extension(addr, enclave_attr.clone(), 7 as u8)?,
         };
 
         Ok(FNSClient { channel })
