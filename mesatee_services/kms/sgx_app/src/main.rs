@@ -68,7 +68,7 @@ fn run_key_management_service(tee: Arc<TeeBinder>) -> Result<()> {
     let pool = ThreadPool::new(n_workers);
     for stream in listener.incoming() {
         match stream {
-            Ok(stream) => {
+            Ok(mut stream) => {
                 let mut data = [0 as u8; 1];
                 match stream.read(&mut data) {
                     Ok(_) => {}
