@@ -32,7 +32,7 @@ where
     U: Serialize,
     V: DeserializeOwned,
 {
-   pub fn _new(
+   fn _new(
         addr: std::net::SocketAddr,
         enclave_attr: sgx::EnclaveAttr,
         extension: u8,
@@ -63,7 +63,7 @@ where
         addr: std::net::SocketAddr,
         enclave_attr: sgx::EnclaveAttr,
     ) -> Result<SgxTrustedChannel<U, V>> {
-        _new(addr, enclave_attr, 0)
+        SgxTrustedChannel::<U, V>::_new(addr, enclave_attr, 0)
     }
 
     pub fn new_with_extension(
@@ -71,7 +71,7 @@ where
         enclave_attr: sgx::EnclaveAttr,
         extension: u8,
     ) -> Result<SgxTrustedChannel<U, V>> {
-        _new(addr, enclave_attr, extension)
+        SgxTrustedChannel::<U, V>::_new(addr, enclave_attr, extension)
     }
 
     pub fn invoke(&mut self, input: U) -> Result<V> {
