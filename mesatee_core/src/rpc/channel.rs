@@ -75,6 +75,6 @@ where
     }
 
     pub fn invoke(&mut self, input: U) -> Result<V> {
-        client.invoke(input)
+        self.client.invoke(input)
     }
 }
