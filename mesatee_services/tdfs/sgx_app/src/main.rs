@@ -18,6 +18,7 @@ extern crate log;
 use mesatee_core::prelude::*;
 use mesatee_core::{config, Result};
 
+use std::io::Read;
 use std::net::TcpListener;
 use std::os::unix::io::IntoRawFd;
 use threadpool::ThreadPool;
@@ -116,7 +117,7 @@ fn run_tdfs_service(tee: Arc<TeeBinder>) -> Result<()> {
                         continue;
                     },
                 }
-                
+
                 let tee = tee.clone();
                 pool.execute(move || {
                     debug!("new worker from {:?}", stream.peer_addr());

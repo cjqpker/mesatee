@@ -18,6 +18,7 @@ extern crate log;
 use mesatee_core::prelude::*;
 use mesatee_core::{config, Result};
 
+use std::io::Read;
 use std::net::TcpListener;
 use std::os::unix::io::IntoRawFd;
 use threadpool::ThreadPool;
