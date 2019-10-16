@@ -17,7 +17,7 @@ option(COV OFF "Turn on coverage or not")
 # ======= VARIABLES FOR CMAKE -D{VAR}=VAL CONFIGURATION END =======
 
 # =============== VARIABLES FOR MANUAL CHANGE BEGIN ===============
-set(UNIX_APPS config_gen private_join_and_compute)
+set(UNIX_APPS config_gen quickstart private_join_and_compute)
 set(UNIX_LIBS mesatee_sdk protected_fs_rs)
 # need relative path for SGX_MODULE_PATHS to find Enclave.config.xml
 set(SGX_MODULE_PATHS mesatee_services/kms mesatee_services/tdfs mesatee_services/tms
